@@ -302,7 +302,7 @@ reservePktID :: MQTTClient -> [DispatchType] -> STM (TChan MQTTPkt, Word16)
 reservePktID MQTTClient{..} dts = do
   ch <- newTChan
   pid <- readTVar _pktID
-  modifyTVar' _pktID succ
+  modifyTVar' _pktID (\x -> if x == maxBound then 0 else succ x)
   modifyTVar' _acks (Map.union (Map.fromList [((t, pid), ch) | t <- dts]))
   pure (ch,pid)
 
