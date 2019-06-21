@@ -213,7 +213,7 @@ runClientAppData mkconn MQTTConfig{..} = do
 
 
         watchdog ch = do
-          r <- timeout (pingPeriod * 3) w
+          r <- timeout (pingPeriod * 100) w
           case r of
             Nothing -> E.throwIO Timeout
             Just _  -> watchdog ch
